@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+author: "Alejandro Llerena"
+date: "1/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Caracteristicas_de_la_vivienda_y_el_hogar <- import("Caracteristicas de la vivienda y el hogar.sav")
+Educacion_Enaho01A_2020_300 <- import("Educacion- Enaho01A-2020-300.sav")
+Empleo_e_Ingresos <- import("Empleo e Ingresos.sav")
+GBT_Enaho01B_2020_1 <- import("GBT-Enaho01B-2020-1.sav")
+```
+Abrimos las bases de datos:
+
+
+Creamos un Dataframe con las variables a Utilizar
+
+```{r}
+Vivienda <- select(Caracteristicas_de_la_vivienda_y_el_hogar, AÑO, MES, CONGLOME, VIVIENDA, HOGAR, UBIGEO, DOMINIO, ESTRATO, P101, P102, P103, P103A, P110, P110A1, P111A, P1121, P1144) 
+Educacion <- select(Educacion_Enaho01A_2020_300,AÑO, MES, CONGLOME, VIVIENDA, HOGAR, UBIGEO, DOMINIO, ESTRATO, P301A)
+Ingreso <- select(Empleo_e_Ingresos,AÑO, MES, CONGLOME, VIVIENDA, HOGAR, UBIGEO, DOMINIO, ESTRATO, P530A)
+Gobernabilidad <- select(GBT_Enaho01B_2020_1, AÑO, MES, CONGLOME, VIVIENDA, HOGAR, UBIGEO, DOMINIO, `P1$01`,`P1$02`,`P1$03`,`P1$04`,`P1$05`,`P1$06`,`P1$07`,`P1$08`,`P1$09`,`P1$10`,`P1$11`,`P1$12`,`P1$13`,`P1$14`,`P1$15`,`P1$16`,`P1$17`,`P1$18`,`P1$19`,`P1$20`,`P1$21`,P6)
+```
+}
+
+```{r}
+coneros <- merge(Vivienda, merge(Educacion, merge(Ingreso,Gobernabilidad)))
+coneros <- na.omit(coneros)
+```
+
+
+
+CODIFICACIÓN DE LAS VARIABLES:
+
+```{r}
+library(haven)
+write_sav(coneros, "coneros.sav")
+```
+
+
