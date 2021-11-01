@@ -1,0 +1,276 @@
+---
+title: "¿Qué factores inciden en la confianza en las instituciones públicas en el Perú?"
+author: "Lévano García_20191128 & Llerena Esquivel_20191353"
+date: "25/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+Link de Github: https://github.com/Alejangro19/Trabajo_POL304---Grupo-ConeRos-.git
+
+Librerias:
+
+```{r}
+library(dplyr)
+library(rio)
+library(ggplot2)
+```
+
+## **¿QUÉ FACTORES INCIDIERON EN LA CONFIANZA EN LAS INSTITUCIONES PÚBLICAS EN EL PERÚ? (2020)**
+
+### **INTRODUCCION:**
+
+En los últimos años, la desconfianza de la población hacia los servicios que brinda el Estado se ha hecho expresa por medio de los estallidos sociales y manifestaciones públicas que han tenido lugar en gran parte de la región latinoamericana. Cabe resaltar que esta no es una problemática nueva para América Latina, pues los niveles de confianza institucional en la región siempre han sido muy bajos a comparación del resto del mundo (Estella de Noriega, 2020). A nivel nacional la situación se replica: los niveles de confianza en las instituciones públicas se mantienen muy bajos desde hace varias décadas, e incluso, el Perú es el país con el nivel de confianza en el Congreso más bajo de la región (Estella de Noriega, 2020).
+
+Se entiende como confianza institucional a la "confianza que las personas tienen en las instituciones "formales"" (Estella de Noriega, 2020). Los autores Cosíos y Vega Centeno (2018) mencionan que la confianza que los ciudadanos tienen en las instituciones públicas "implica una especie de evaluación constante de sus capacidades y decisiones desde la opinión de los ciudadanos". Por su parte, Benites (2021) sostiene que "esta forma de confianza varía entre los individuos en una sociedad, a partir de las diferentes experiencias, evaluaciones y valores que desarrollan en sus respectivos contextos políticos".
+
+Es importante conocer la confianza en las instituciones públicas, puesto que ello demuestra cuán satisfechos están los ciudadanos con el funcionamiento del sistema democrático, que busca brindar servicios públicos que permitan el bienestar colectivo. En ese sentido, una alta confianza en las instituciones legítima y aporta a la consolidación de los regímenes democráticos. Sobre ello, Cosíos & Vega Centeno (2018) mencionan lo siguiente:
+
+"El nivel de confianza de la población tiene un rol fundamental, ya que representa un indicador de la evaluación del desempeño de los organismos del Estado. Sobre este tema Bondi (2009) afirma que, si bien la desconfianza genera ciudadanía crítica, la presencia de altos índices de ésta es perjudicial para la consolidación de la democracia"(Cosíos & Vega Centeno, 2018).
+
+La problemática de la confianza institucional ha sido analizada previamente en una serie de investigaciones que buscan conocer este fenómeno a nivel local, nacional y regional (Latinoamérica). En ese sentido, destacamos la relevancia de investigaciones realizadas en los últimos años que buscan conocer qué factores influyen en los niveles de desconfianza institucional, para lo cual plantean diversas hipótesis.
+
+A nivel local, Cohaila (2015) realiza una exhaustiva investigación doctoral que pretende conocer los factores que determinan la confianza en las instituciones locales, el gobierno local, mediante una comparación entre dos distritos de Lima Metropolitana (Los Olivos y San Martín de Porres). Para ello, el autor analiza si existe una relación entre este fenómeno y varias variables explicativas, a partir de lo cual encuentra que sí se relacionan los factores del clientelismo, la inclusión real y la satisfacción con la democracia local.
+
+A nivel nacional, Benites (2021) realizó una reciente investigación acerca de los determinantes de los niveles de confianza institucional en las y los ciudadanos peruanos. A partir de este estudio, encuentra que este fenómeno puede ser explicado a partir del desempeño que tienen las instituciones; adicionalmente, descarta el supuesto de que esta confianza está determinada por la presencia de valores democráticos en la ciudadanía.
+
+En el ámbito regional, Estella de Noriega (2020) plantea un estudio comparativo entre el nivel de confianza general e institucional a nivel de los países latinoamericanos. El autor emplea los datos del Latinobarómetro desde 1996 hasta el año 2018, con el fin de encontrar tendencias a nivel regional, diferencias entre los países, instituciones que presentan niveles más elevados de desconfianza, entre otros puntos que se evalúan. A partir de esta revisión y comparación de datos, plantea como hipótesis que la baja confianza institucional sería resultado de la performance de las instituciones evaluadas; no obstante, su estudio deja abierta esta respuesta tentativa a futuras investigaciones.
+
+Pese a que se trata de un fenómeno que se ha estudiado previamente, en este trabajo se busca determinar si existen otros factores adicionales que se relacionan también con esta desconfianza, en los cuales no se ha profundizado. De tal manera, el objetivo general de esta investigación es encontrar qué factores estarían influyendo en la baja confianza en las instituciones públicas que existe actualmente en el Perú. Como objetivos específicos nos planteamos dos. El primero de ellos es encontrar cuánto aportan cada una de estas variables a los niveles de confianza en las instituciones públicas. Además, a partir de estos resultados se podría reconocer en qué aspectos deben ser mejorados o tomados en cuenta para que se tenga una mejor percepción de estas instituciones (objetivos específicos del reporte)
+
+Por ello, es importante encontrar los factores que condicionan esta baja confianza en las instituciones públicas peruanas. En esa línea, la pregunta de investigación de este trabajo será averiguar qué factores inciden en la confianza en las instituciones públicas peruanas. Para responder esta pregunta, en un primer momento se plantea como hipótesis que tanto la percepción sobre la democracia, como un conjunto de factores socioeconómicos tienen una alta incidencia en la predicción de la confianza en las instituciones. Entre estos últimos, se encuentran el acceso a servicios básicos tales como el acceso al agua potable, al servicio de electricidad, acceso a la salud, acceso a la educación (años de estudio), y los ingresos percibidos por hogar.
+
+### **Base de Datos a utilizar: Encuesta Nacional de Hogares 2020**
+
+Para comprobar la validez de la respuesta tentativa, se realizará un análisis cuantitativo a partir de la base de datos de la Encuesta Nacional de Hogares (ENAHO) del año 2020, realizada por el Instituto Nacional de Estadística e Informática (INEI), de la cual se extraerán las variables de estudio de interés.
+
+Previamente usamos las bases de datos correspodientes a las secciones Educacion_Enaho01A_2020_300, Empleo_e\_Ingresos, GBT_Enaho01B_2020_1 y Caracteristicas_de_la_vivienda_y\_el_hogar; para crear un dataframe con solo las variables a utliizar.
+
+La base creada, toma el nombre de nuestro grupo: "coneros"
+
+```{r}
+coneros <- import("https://raw.githubusercontent.com/Alejangro19/Trabajo_POL304---Grupo-ConeRos-/main/coneros.csv")
+```
+
+### CODIFICACIÓN DE LAS VARIABLES:
+
+#### **VARIABLE DEPENDIENTE:**
+
+**Confianza en las Instituciones Públicas (P1\$01:P1\$21)**
+
+Para comprobar la validez de la respuesta tentativa, se realizará un análisis cuantitativo a partir de la base de datos de la Encuesta Nacional de Hogares (ENAHO) del año 2020, realizada por el Instituto Nacional de Estadística e Informática (INEI), de la cual se extraerán las variables de estudio de interés. Como variable dependiente, se creará un índice de confianza en las instituciones públicas a partir de las preguntas P1\$01 hasta la P1\$21 (se puede encontrar las variables de esta forma en la base de datos y en el diccionario de datos). En estas preguntas, se ha encuestado sobre la confianza de los ciudadanos en distintas instituciones, tales como el Jurado Nacional de Elecciones (JNE), la ONPE, la RENIEC, las municipalidades, la Policía Nacional del Perú (PNP), la Defensoría del Pueblo, el Congreso del Perú, los partidos políticos, entre otras instituciones. Posteriormente, el índice creado será dividido en cuatro, con el fin de ordenar el nivel de confianza en categorías de menor a mayor: muy baja, baja, alta y muy alta confianza. 
+
+De acuerdo a la encuesta, el valor 5 equivale a "No sabe" y por tanto transformaremos estos numeros en NAs.
+
+```{r}
+str(coneros$`P1$01`)
+table(coneros$`P1$01`)
+coneros$`P1$01`[coneros$`P1$01` == 5] <- NA
+coneros$`P1$02`[coneros$`P1$02` == 5] <- NA
+coneros$`P1$03`[coneros$`P1$03` == 5] <- NA
+coneros$`P1$04`[coneros$`P1$04` == 5] <- NA
+coneros$`P1$05`[coneros$`P1$05` == 5] <- NA
+coneros$`P1$06`[coneros$`P1$06` == 5] <- NA
+coneros$`P1$07`[coneros$`P1$07` == 5] <- NA
+coneros$`P1$08`[coneros$`P1$08` == 5] <- NA
+coneros$`P1$09`[coneros$`P1$09` == 5] <- NA
+coneros$`P1$10`[coneros$`P1$10` == 5] <- NA
+coneros$`P1$01`[coneros$`P1$11` == 5] <- NA
+coneros$`P1$12`[coneros$`P1$12` == 5] <- NA
+coneros$`P1$13`[coneros$`P1$13` == 5] <- NA
+coneros$`P1$14`[coneros$`P1$14` == 5] <- NA
+coneros$`P1$15`[coneros$`P1$15` == 5] <- NA
+coneros$`P1$16`[coneros$`P1$16` == 5] <- NA
+coneros$`P1$17`[coneros$`P1$17` == 5] <- NA
+coneros$`P1$18`[coneros$`P1$18` == 5] <- NA
+coneros$`P1$19`[coneros$`P1$19` == 5] <- NA
+coneros$`P1$20`[coneros$`P1$20` == 5] <- NA
+coneros$`P1$21`[coneros$`P1$21` == 5] <- NA
+```
+
+Sumamos las variables anteriores para crear un indice que mida la confianza en las Instituciones Públicas
+
+```{r}
+coneros$confi <-  coneros$`P1$01`+coneros$`P1$02`+coneros$`P1$03`+coneros$`P1$04`+coneros$`P1$05`+coneros$`P1$06`+coneros$`P1$07`+coneros$`P1$08`+coneros$`P1$09`+coneros$`P1$10`+coneros$`P1$11`+coneros$`P1$12`+coneros$`P1$13`+coneros$`P1$14`+coneros$`P1$15`+coneros$`P1$16`+coneros$`P1$17`+coneros$`P1$18`+coneros$`P1$19`+coneros$`P1$20`+coneros$`P1$21`
+summary(coneros$confi)
+coneros$confi <- (coneros$confi-21)/63*100
+```
+
+La convertimos en una variable ordinal de 4 niveles: "muy baja", "baja", "alta" , "muy alta" [confianza en las instituciones], cada 25 unidades
+
+```{r}
+summary(coneros$confi)
+coneros$confi = cut(coneros$confi, breaks = c(0,25,50,75,100),
+                                  include.lowest = T, ordered_result = T,
+                                  labels = c("muybaja", "baja",
+                                        "alta", "muyalta"))
+prop.table(table(coneros$confi))*100
+```
+
+Descripción de la Variable:
+
+```{r}
+coneros %>%
+ filter(!is.na(confi)) %>%
+ ggplot() +
+  aes(x = confi) +
+  geom_bar(fill = "#854B90") +
+  labs(
+    x = "Confianza",
+    y = "Frecuencia ",
+    title = "Gráfico de Barras de la Confianza en las Instituciones"
+  ) +
+  theme_gray() +
+  theme(
+    plot.title = element_text(
+      size = 15L,
+      face = "bold",
+      hjust = 0.5
+    ),
+    axis.title.y = element_text(
+      size = 13L,
+      face = "bold"
+    ),
+    axis.title.x = element_text(
+      size = 13L,
+      face = "bold"
+    )
+  )
+
+```
+
+A partir de un gráfico de barras es posible visualizar los niveles de confianza y ciertas tendencias. Se observa que es muy bajo el porcentaje de ciudadanos que tienen una confianza "muy alta" en las instituciones públicas, mientras que el nivel de "baja confianza" concentra más del 50% de los encuestados. En ese sentido, la categoría "baja" confianza en las instituciones es la moda de la variable, puesto que es el valor más frecuente. 
+
+#### **VARIABLES INDEPENDIENTES**
+
+**Servicios Públicos:**
+
+Utilizaremos como variables independientes al acceso a algunos servicios públicos. Cabe resaltar que trabajaremos estas variables relacionadas al acceso a los servicios básicos como dicotómica, es decir, cuentan con dos posibles respuestas: contar con el acceso al servicio o no.
+
+```{r}
+coneros <- rename(coneros, agua=P110A1, electricidad=P1121, desagüe=P111A, internet=P1144)
+
+```
+
+Acceso a agua potable (P110A1)
+
+```{r}
+coneros$agua <- as.factor(coneros$agua)
+levels(coneros$agua) <- c("si","no")
+tagua <- prop.table(table(coneros$agua))*100
+barplot(tagua, 
+        beside = TRUE, las=1, 
+        xlab='Acceso a Agua Potable', ylab='Porcentaje',
+        col = c("lightblue", "mistyrose"),
+        ylim = c(0, 100))
+```
+
+A partir de la visualización de la variable "acceso al agua potable", se puede conocer que cerca del 80% de las personas encuestadas sí tienen acceso a este servicio. En este caso, el valor de la moda es "sí".
+
+Acceso a Electricidad (P1121)
+
+```{r}
+str(coneros$electricidad)
+coneros$electricidad <- as.factor(coneros$electricidad)
+levels(coneros$electricidad) <- c("no","si")
+telectri <- prop.table(table(coneros$electricidad))*100
+barplot(telectri, 
+        beside = TRUE, las=1, 
+        xlab='Acceso a Electricidad', ylab='Porcentaje',
+        col = c("lightblue", "mistyrose"),
+        ylim = c(0, 100))
+```
+
+El gráfico de la variable "acceso a electricidad" nos permite conocer que cerca de la totalidad (más del 90%) de los encuestados dice contar con acceso a este servicio. En ese sentido, el "sí tener acceso a la electricidad" es la moda. 
+
+Acceso a desagüe (P111A)
+
+```{r}
+coneros$desagüe = cut(coneros$desagüe, breaks = c(0,2,9),
+                                  include.lowest = T, ordered_result = F,
+                                  labels = c("si","no"))
+tdesa <- prop.table(table(coneros$desagüe))*100
+barplot(tdesa, 
+        beside = TRUE, las=1, 
+        xlab='Acceso a Desagüe', ylab='Porcentaje',
+        col = c("lightblue", "mistyrose"),
+        ylim = c(0, 100))
+```
+
+Al visualizar la variable "acceso al Desagüe", se observa que los porcentajes de las personas que tienen acceso a este servicio, y los que no, no guardan una diferencia abismal. En ese sentido, la mayoría de encuestados tiene acceso al desagüe (más del 60%), mientras que cerca del 40% de encuestados no cuenta con el servicio. 
+
+Acceso a Internet (P1144)
+
+```{r}
+str(coneros$internet)
+coneros$internet <- as.factor(coneros$internet)
+levels(coneros$internet) <- c("si","no")
+tinternet <- prop.table(table(coneros$internet))*100
+barplot(tinternet, 
+        beside = TRUE, las=1, 
+        xlab='Acceso a Internet', ylab='Porcentaje',
+        col = c("lightblue", "mistyrose"),
+        ylim = c(0, 100))
+```
+
+Al observar la variable "acceso a internet" es posible visualizar que más de la mitad de los encuestados, cerca al 60%, cuenta con acceso a internet, mientras que cerca al 40% no tiene acceso. En el caso de todos los demás servicios básicos a los que se ha hecho referencia, el porcentaje de encuestados que accede a ellos es superior al 60%, mientras que en el caso de acceso al internet es inferior. Esto demostraría cómo la brecha de acceso a este servicio continúa siendo grande.
+
+**Ingreso Monetario:**
+
+Se tomará en cuenta para el análisis la variable "ingresos monetarios percibidos por familia". Esta es una variable numérica, por lo cual podemos obtener y analizar su media, mediana, moda, a partir de la función summary.
+
+```{r}
+summary(coneros$P530A)
+coneros %>%
+ filter(!is.na(P530A)) %>%
+ ggplot() +
+  aes(x = "", y = P530A) +
+  geom_boxplot(shape = "circle", fill = "#112446") +
+  labs(
+    y = "Frecuencia ",
+    title = "Boxplot del Ingreso por Familia"
+  ) +
+  theme_light() +
+  theme(
+    plot.title = element_text(
+      size = 15L,
+      face = "bold",
+      hjust = 0.5
+    )
+  )
+
+```
+
+Primero, se observa que existen familias que perciben solamente 1 sol como ingresos mensuales, mientras que existen encuestados que señalaron ganar hasta 50000 soles. Segundo, se obtiene que la mediana es de 300 soles; ello quiere decir que la mitad de los encuestados gana menos de 300 soles al mes por familia, mientras que el otro 50% de ciudadanos gana un monto superior a 300. 
+
+Además, se tiene que la media de la variable es 646.5; es decir, los ingresos mensuales por familia en promedio son de 646.5 soles. No obstante, esta información no es muy útil para sacar conclusiones sobre los ingresos monetarios de las y los peruanos, ya que existen datos outliers: personas con ingresos bastante inferiores al promedio, y otras con ganancias muy superiores. 
+
+Asimismo, la división de la variable por cuartiles nos permite conocer la distribución de los valores. En ese sentido, el 75% de las familias tiene una ganancia mensual inferior o igual a 779, lo cual es un monto por debajo del sueldo mínimo en el Perú (930 soles al mes).
+
+Podemos obtener esta información de manera gráfica mediante el histograma a continuación en el cual se visualiza que en el eje X tenemos los ingresos monetarios, y el eje Y indica la cantidad de encuestados que señaló percibir ese monto por familia. Además, un gráfico "boxplot" permite ver la distribución de los valores de la variable; a partir de este, se observa cómo los valores están muy dispersos en el gráfico y existen varios casos "outliers", entre los cuales el que más se distancia es el caso de aquella familia encuestado con una ganancia mensual mayor a 50 mil soles.
+
+**Percepción sobre la Democracia**
+
+Creemos que la percepción sobre la democracia de los peruanos también servirá como variable independiente
+
+```{r}
+coneros$P6[coneros$P6 == 5] <- NA
+coneros$P6 <- as.ordered(coneros$P6)
+levels(coneros$P6) <- c("nada importante","poco importante","importante","muy importante")
+barplot(prop.table(table(coneros$P6))*100, xlab = "La democracia es..." , co = "#93BADB")
+
+```
+
+La variable "percepción sobre la democracia" es una categórica ordinal, obtenida a partir de la pregunta "P6", que interroga sobre cuán importante consideran las y los encuestados que es la democracia en el país. En ese sentido, la variable tiene cuatro categorías, que se ordenan de menor a mayor: nada importante, poco importante, importante y muy importante. 
+
+Mediante la visualización gráfica de la variable, se observa que la moda de la variable es "importante", es decir, hay una mayor frecuencia de encuestados que considera que la democracia es importante en el Perú (más del 60%). Además, es resaltante que para casi la totalidad de los encuestados la democracia tiene cierta importancia, puesto que aquellos que señalan que no es "nada importante", se acercan al 0%.
+
+### POSIBLE PRUEBA A UTILIZAR:
+
+A partir de las variables propuestas, una posible prueba estadística a utilizar es el Modelo de Regresión Logística Ordinal. Se emplea este modelo, puesto que se tiene una variable dependiente de tipo ordinal, el índice de confianza en las instituciones públicas, el cual cuenta con cuatro categorías que pueden ser ordenadas de menor a mayor (muy baja, baja, alta, muy alta). De esta manera, el modelo de regresión ordinal permitirá modelar y predecir el efecto de nuestras variables independientes propuestas en el nivel de confianza que tienen los ciudadanos hacia las instituciones públicas peruanas, en el año 2020. 
+
+\
